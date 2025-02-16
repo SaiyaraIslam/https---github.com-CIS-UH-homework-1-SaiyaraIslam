@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
+#creating connection to the db
 def create_connection(host_name, user_name, user_password, db_name):
     connection = None
     try:
@@ -15,11 +15,14 @@ def create_connection(host_name, user_name, user_password, db_name):
         print(f"The error {e} ocurred.")
     return connection
 
-def execute_query(connection, query):
+def execute_query(connection, query, values=None):
     cursor = connection.cursor()
     try:
-        cursor.execute(query)
-        connection.commit()
+        if values:
+            cursor.execute(query, values)
+        else: #had to use the else statement or was getting error message
+            cursor.execute(query)
+        connection.commit() #commiting the changes in the query
         print("Query executed successfully")
     except Error as e:
         print(f"The error {e} ocurred.")
